@@ -1316,6 +1316,32 @@
       setTimeout(function() { toast.classList.remove('show'); }, 2800);
     });
   }
+
+  // ── Auto-resize: reports document height to parent frame ──
+  function sendHeight() {
+    var h = document.documentElement.scrollHeight;
+    window.parent.postMessage({ type: 'si-resize', height: h }, '*');
+  }
+
+  // Fire on load, navigation, and any DOM/layout changes
+  window.addEventListener('load', sendHeight);
+  var resizeObserver = new ResizeObserver(function() { sendHeight(); });
+  resizeObserver.observe(document.body);
+</script>
+
+<script>
+  // ── Parent-side listener (ignored when not in an iframe) ──
+  // Include this snippet in your ThriveCart custom HTML block
+  // alongside the iframe tag, or add it to a global script slot.
+  //
+  // <script>
+  // window.addEventListener('message', function(e) {
+  //   if (e.data && e.data.type === 'si-resize') {
+  //     var iframe = document.querySelector('iframe[src*="assets.solutionintegrators.us"]');
+  //     if (iframe) iframe.style.height = e.data.height + 'px';
+  //   }
+  // });
+  // <\/script>
 </script>
 </body>
 </html>
