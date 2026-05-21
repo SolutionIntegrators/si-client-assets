@@ -1,965 +1,1308 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SI Digital Assets — Proposal Customization</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Questrial&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Questrial&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --si-burnt-orange: #A34F2B;
-    --si-sunset-yellow: #D28733;
-    --si-denim-blue: #3A4F5E;
-    --si-linen: #FCF1E8;
-    --si-dark-text: #1E1E1E;
-    --si-border: rgba(58,79,94,0.18);
-    --si-border-hover: rgba(163,79,43,0.35);
+    --burnt-orange: #A34F2B;
+    --sunset-yellow: #D28733;
+    --denim-blue: #3A4F5E;
+    --linen: #FCF1E8;
+    --dark-text: #1E1E1E;
+    --border: rgba(58,79,94,0.15);
+    --border-focus: #A34F2B;
+    --radius: 10px;
+    --radius-lg: 16px;
   }
 
-  .hol-wrap {
+  html { scroll-behavior: smooth; }
+
+  body {
     font-family: 'Questrial', sans-serif;
-    color: var(--si-dark-text);
-    max-width: 680px;
-    padding: 0 0 2rem;
+    background: var(--linen);
+    color: var(--dark-text);
+    min-height: 100vh;
+    line-height: 1.6;
   }
 
-  .hol-header {
-    background: var(--si-denim-blue);
-    border-radius: var(--border-radius-lg);
-    padding: 2rem 2rem 1.5rem;
-    margin-bottom: 2rem;
+  /* ─── GATE SCREEN ─── */
+  #gate {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background: var(--linen);
   }
 
-  .hol-eyebrow {
+  .gate-card {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    border: 0.5px solid var(--border);
+    max-width: 560px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .gate-header {
+    background: var(--denim-blue);
+    padding: 36px 40px 28px;
+  }
+
+  .gate-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(252,241,232,0.65);
+    margin-bottom: 10px;
+  }
+
+  .gate-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 30px;
+    font-weight: 400;
+    color: #FCF1E8;
+    line-height: 1.2;
+  }
+
+  .gate-body {
+    padding: 36px 40px 40px;
+  }
+
+  .gate-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--denim-blue);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .gate-select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    font-family: 'Questrial', sans-serif;
+    font-size: 15px;
+    color: var(--dark-text);
+    background: #fff;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%233A4F5E' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 28px;
+  }
+
+  .gate-select:focus { border-color: var(--burnt-orange); box-shadow: 0 0 0 3px rgba(163,79,43,0.1); }
+
+  .terms-box {
+    background: var(--linen);
+    border: 0.5px solid rgba(163,79,43,0.2);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  .terms-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--burnt-orange);
+    margin-bottom: 12px;
+  }
+
+  .terms-text {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #4a4a4a;
+  }
+
+  .terms-text strong {
+    color: var(--dark-text);
+    font-weight: normal;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 28px;
+    cursor: pointer;
+  }
+
+  .checkbox-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: var(--burnt-orange);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .checkbox-row span {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--dark-text);
+  }
+
+  .gate-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: var(--burnt-orange);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .gate-btn:hover:not(:disabled) { opacity: 0.88; }
+  .gate-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .gate-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #999;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* ─── FORM APP ─── */
+  #app {
+    display: none;
+    min-height: 100vh;
+    background: var(--linen);
+  }
+
+  .app-nav {
+    background: var(--denim-blue);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .app-nav-brand {
     font-family: 'DM Sans', sans-serif;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 3px;
     text-transform: uppercase;
     color: rgba(252,241,232,0.7);
-    margin: 0 0 10px;
   }
 
-  .hol-title {
-    font-family: Georgia, serif;
-    font-size: 26px;
-    font-weight: 400;
-    color: #FCF1E8;
-    margin: 0 0 8px;
-    line-height: 1.25;
-  }
-
-  .hol-subtitle {
-    font-size: 14px;
-    color: rgba(252,241,232,0.75);
-    margin: 0;
-    line-height: 1.6;
-  }
-
-  .hol-progress-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 1.25rem;
-  }
-
-  .hol-step-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(252,241,232,0.25);
-    transition: background 0.3s;
-    cursor: default;
-  }
-
-  .hol-step-dot.active {
-    background: #FCF1E8;
-  }
-
-  .hol-step-dot.done {
-    background: var(--si-sunset-yellow);
-  }
-
-  .hol-step-label {
+  .app-nav-proposal {
     font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    color: rgba(252,241,232,0.6);
-    margin-left: auto;
-  }
-
-  .hol-section {
-    display: none;
-    animation: fadeIn 0.3s ease;
-  }
-
-  .hol-section.active {
-    display: block;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .hol-section-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 1.25rem;
-  }
-
-  .hol-section-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--si-linen);
-    border: 1px solid var(--si-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--si-burnt-orange);
-    font-size: 17px;
-    flex-shrink: 0;
-  }
-
-  .hol-section-title {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--si-burnt-orange);
-    margin: 0;
+    color: rgba(252,241,232,0.5);
   }
 
-  .hol-section-desc {
-    font-size: 13px;
-    color: var(--color-text-secondary);
-    margin: 0 0 1.5rem;
-    line-height: 1.6;
+  .app-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
   }
 
-  .hol-field {
-    margin-bottom: 1.25rem;
+  /* Progress */
+  .progress-wrap {
+    margin-bottom: 40px;
   }
 
-  .hol-label {
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .progress-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--burnt-orange);
+  }
+
+  .progress-count {
     font-family: 'DM Sans', sans-serif;
     font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--si-denim-blue);
-    display: block;
+    color: #999;
+  }
+
+  .progress-bar-bg {
+    height: 3px;
+    background: rgba(163,79,43,0.15);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--burnt-orange);
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+
+  /* Sections */
+  .form-section { display: none; animation: fadeUp 0.3s ease; }
+  .form-section.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
     margin-bottom: 6px;
   }
 
-  .hol-hint {
-    font-size: 12px;
-    color: var(--color-text-secondary);
-    margin: 0 0 8px;
-    line-height: 1.5;
+  .section-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fff;
+    border: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
 
-  .hol-input, .hol-textarea, .hol-select {
+  .section-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--burnt-orange);
+    fill: none;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .section-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--burnt-orange);
+  }
+
+  .section-desc {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.65;
+    margin-bottom: 28px;
+    padding-left: 54px;
+  }
+
+  /* Fields */
+  .field { margin-bottom: 20px; }
+
+  .field-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--denim-blue);
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .req { color: var(--burnt-orange); margin-left: 2px; }
+
+  .field-hint {
+    font-size: 12px;
+    color: #888;
+    line-height: 1.5;
+    margin-bottom: 7px;
+  }
+
+  .field-input,
+  .field-textarea,
+  .field-select {
     width: 100%;
-    box-sizing: border-box;
-    background: var(--color-background-primary);
-    border: 0.5px solid var(--si-border);
-    border-radius: var(--border-radius-md);
+    padding: 11px 14px;
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
     font-family: 'Questrial', sans-serif;
     font-size: 14px;
-    color: var(--si-dark-text);
-    padding: 10px 14px;
-    transition: border-color 0.2s;
+    color: var(--dark-text);
+    background: #fff;
     outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
 
-  .hol-input:focus, .hol-textarea:focus, .hol-select:focus {
-    border-color: var(--si-burnt-orange);
-    box-shadow: 0 0 0 3px rgba(163,79,43,0.1);
+  .field-input:focus,
+  .field-textarea:focus,
+  .field-select:focus {
+    border-color: var(--burnt-orange);
+    box-shadow: 0 0 0 3px rgba(163,79,43,0.08);
   }
 
-  .hol-textarea {
+  .field-textarea {
     resize: vertical;
     min-height: 90px;
     line-height: 1.6;
   }
 
-  .hol-color-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+  .field-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%233A4F5E' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    cursor: pointer;
   }
 
-  .hol-font-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-  }
+  /* Color picker row */
+  .color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-  .hol-color-field {
+  .color-field-wrap {
     display: flex;
     align-items: center;
     gap: 8px;
-    border: 0.5px solid var(--si-border);
-    border-radius: var(--border-radius-md);
-    padding: 8px 12px;
-    background: var(--color-background-primary);
-    transition: border-color 0.2s;
+    padding: 9px 12px;
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    background: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
 
-  .hol-color-field:focus-within {
-    border-color: var(--si-burnt-orange);
-    box-shadow: 0 0 0 3px rgba(163,79,43,0.1);
+  .color-field-wrap:focus-within {
+    border-color: var(--burnt-orange);
+    box-shadow: 0 0 0 3px rgba(163,79,43,0.08);
   }
 
-  .hol-color-swatch {
-    width: 28px;
-    height: 28px;
-    border-radius: 4px;
-    border: 0.5px solid var(--si-border);
+  .color-swatch {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    border: 0.5px solid var(--border);
     cursor: pointer;
     flex-shrink: 0;
   }
 
-  .hol-color-text {
+  .color-text {
     border: none;
     background: transparent;
     font-family: 'Questrial', sans-serif;
     font-size: 14px;
-    color: var(--si-dark-text);
+    color: var(--dark-text);
     flex: 1;
     outline: none;
     min-width: 0;
   }
 
-  .hol-divider {
-    border: none;
-    border-top: 0.5px solid var(--si-border);
-    margin: 1.5rem 0;
+  /* Font grid */
+  .font-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+  /* Phase blocks */
+  .phase-block {
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 14px;
+    background: #fff;
   }
 
-  .hol-subhead {
+  .phase-block-title {
     font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--si-denim-blue);
-    margin: 0 0 1rem;
+    color: var(--denim-blue);
+    margin-bottom: 16px;
   }
 
-  .hol-nav {
-    display: flex;
-    gap: 10px;
-    margin-top: 1.5rem;
-    align-items: center;
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 0.5px solid var(--border);
+    margin: 28px 0;
   }
 
-  .hol-btn-back {
+  .subhead {
     font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 600;
-    letter-spacing: 1px;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: var(--si-denim-blue);
+    color: var(--denim-blue);
+    margin-bottom: 16px;
+  }
+
+  /* Nav buttons */
+  .nav-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 0.5px solid var(--border);
+  }
+
+  .btn-back {
+    padding: 12px 22px;
     background: transparent;
-    border: 0.5px solid var(--si-border);
-    border-radius: var(--border-radius-md);
-    padding: 10px 20px;
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--denim-blue);
     cursor: pointer;
     transition: background 0.2s;
   }
 
-  .hol-btn-back:hover {
-    background: var(--color-background-secondary);
-  }
+  .btn-back:hover { background: rgba(58,79,94,0.06); }
 
-  .hol-btn-next {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: white;
-    background: var(--si-burnt-orange);
+  .btn-next {
+    margin-left: auto;
+    padding: 12px 28px;
+    background: var(--burnt-orange);
     border: none;
-    border-radius: var(--border-radius-md);
-    padding: 10px 24px;
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #fff;
     cursor: pointer;
     transition: opacity 0.2s;
-    margin-left: auto;
   }
 
-  .hol-btn-next:hover {
-    opacity: 0.88;
+  .btn-next:hover { opacity: 0.88; }
+
+  /* Summary */
+  .summary-card {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    border: 0.5px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 24px;
   }
 
-  .hol-btn-copy {
+  .summary-section-head {
+    background: var(--linen);
+    padding: 10px 20px;
     font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--burnt-orange);
+    border-bottom: 0.5px solid rgba(163,79,43,0.12);
+  }
+
+  .summary-row {
+    display: flex;
+    gap: 16px;
+    padding: 10px 20px;
+    border-bottom: 0.5px solid rgba(58,79,94,0.07);
     font-size: 13px;
+  }
+
+  .summary-row:last-child { border-bottom: none; }
+
+  .summary-key {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    color: var(--denim-blue);
+    min-width: 150px;
+    flex-shrink: 0;
+    font-size: 12px;
+    padding-top: 1px;
+  }
+
+  .summary-val {
+    color: var(--dark-text);
+    line-height: 1.55;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+
+  .copy-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--denim-blue);
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    margin-bottom: 12px;
+  }
+
+  .copy-msg {
+    flex: 1;
+    font-size: 14px;
+    color: rgba(252,241,232,0.85);
+    line-height: 1.5;
+  }
+
+  .copy-msg strong {
+    color: #FCF1E8;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .btn-copy {
+    flex-shrink: 0;
+    padding: 12px 22px;
+    background: var(--burnt-orange);
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-copy:hover { opacity: 0.88; }
+
+  .copied-toast {
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--burnt-orange);
     font-weight: 600;
     letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--si-burnt-orange);
-    background: var(--si-linen);
-    border: 1px solid rgba(163,79,43,0.25);
-    border-radius: var(--border-radius-md);
-    padding: 10px 24px;
-    cursor: pointer;
-    transition: background 0.2s;
-    margin-left: auto;
-  }
-
-  .hol-btn-copy:hover {
-    background: rgba(163,79,43,0.1);
-  }
-
-  .hol-checkbox-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .hol-checkbox-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 10px 12px;
-    border: 0.5px solid var(--si-border);
-    border-radius: var(--border-radius-md);
-    cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
-    background: var(--color-background-primary);
-  }
-
-  .hol-checkbox-item:hover {
-    border-color: var(--si-burnt-orange);
-    background: var(--si-linen);
-  }
-
-  .hol-checkbox-item input[type="checkbox"] {
-    margin-top: 2px;
-    accent-color: var(--si-burnt-orange);
-    flex-shrink: 0;
-  }
-
-  .hol-checkbox-label {
-    font-size: 13px;
-    line-height: 1.5;
-  }
-
-  .hol-checkbox-sublabel {
-    font-size: 12px;
-    color: var(--color-text-secondary);
-    margin-top: 1px;
-  }
-
-  .hol-summary {
-    background: var(--si-linen);
-    border-radius: var(--border-radius-lg);
-    border: 0.5px solid rgba(163,79,43,0.2);
-    padding: 1.5rem;
-  }
-
-  .hol-summary-row {
-    display: flex;
-    gap: 12px;
-    border-bottom: 0.5px solid rgba(163,79,43,0.12);
-    padding: 10px 0;
-    font-size: 13px;
-  }
-
-  .hol-summary-row:last-child {
-    border-bottom: none;
-  }
-
-  .hol-summary-key {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    color: var(--si-denim-blue);
-    min-width: 130px;
-    flex-shrink: 0;
-  }
-
-  .hol-summary-val {
-    color: var(--si-dark-text);
-    line-height: 1.5;
-    word-break: break-word;
-  }
-
-  .hol-required {
-    color: var(--si-burnt-orange);
-    margin-left: 2px;
-  }
-
-  .hol-copied-msg {
-    font-size: 12px;
-    color: var(--si-burnt-orange);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    opacity: 0;
+    height: 18px;
     transition: opacity 0.3s;
-    margin-right: auto;
+    opacity: 0;
   }
 
-  .hol-copied-msg.show {
-    opacity: 1;
+  .copied-toast.show { opacity: 1; }
+
+  /* Step 3 grid */
+  .steps-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+  /* Testi blocks */
+  .testi-block {
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 14px;
+    background: #fff;
+  }
+
+  .testi-block-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--denim-blue);
+    margin-bottom: 16px;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .app-inner { padding: 32px 16px 60px; }
+    .gate-header { padding: 28px 24px 22px; }
+    .gate-body { padding: 28px 24px 32px; }
+    .color-grid { grid-template-columns: 1fr; }
+    .font-grid { grid-template-columns: 1fr 1fr; }
+    .steps-grid-3 { grid-template-columns: 1fr; }
+    .section-desc { padding-left: 0; }
+    .copy-wrap { flex-direction: column; align-items: stretch; }
   }
 </style>
+</head>
+<body>
 
-<div class="hol-wrap">
-  <h2 class="sr-only">House of Lume proposal installation intake form</h2>
+<!-- ════════════════════════════════
+     GATE SCREEN
+════════════════════════════════ -->
+<div id="gate">
+  <div>
+    <div class="gate-card">
+      <div class="gate-header">
+        <p class="gate-eyebrow">Solution Integrators</p>
+        <h1 class="gate-title">Digital Asset<br>Access Portal</h1>
+      </div>
+      <div class="gate-body">
 
-  <div class="hol-header">
-    <p class="hol-eyebrow">House of Lume x Solution Integrators</p>
-    <h1 class="hol-title">Proposal Install Intake</h1>
-    <p class="hol-subtitle">Fill this out before your install session. The more detail you share here, the faster we can build your proposal exactly the way you need it.</p>
-    <div class="hol-progress-wrap">
-      <div class="hol-step-dot active" id="dot-0"></div>
-      <div class="hol-step-dot" id="dot-1"></div>
-      <div class="hol-step-dot" id="dot-2"></div>
-      <div class="hol-step-dot" id="dot-3"></div>
-      <div class="hol-step-dot" id="dot-4"></div>
-      <div class="hol-step-dot" id="dot-5"></div>
-      <div class="hol-step-dot" id="dot-6"></div>
-      <span class="hol-step-label" id="step-label">Step 1 of 7</span>
-    </div>
-  </div>
+        <label class="gate-label" for="proposal-select">Select Your Proposal Template</label>
+        <select class="gate-select" id="proposal-select">
+          <option value="">— Choose a template —</option>
+          <option value="House of Lume">House of Lume</option>
+        </select>
 
-  <!-- SECTION 0: Brand Colors & Fonts -->
-  <div class="hol-section active" id="section-0">
-    <div class="hol-section-header">
-      <div class="hol-section-icon"><i class="ti ti-palette" aria-hidden="true"></i></div>
-      <p class="hol-section-title">Brand Colors & Fonts</p>
-    </div>
-    <p class="hol-section-desc">This is the foundation — every section of your proposal pulls from these values, so get them right first. Have your hex codes ready.</p>
-
-    <p class="hol-subhead">Colors</p>
-
-    <div class="hol-color-row">
-      <div class="hol-field">
-        <label class="hol-label">Lightest Color <span class="hol-required">*</span></label>
-        <p class="hol-hint">Usually your background or white</p>
-        <div class="hol-color-field">
-          <input type="color" class="hol-color-swatch" id="color1" value="#FFFFFF">
-          <input type="text" class="hol-color-text" id="color1-text" placeholder="#FFFFFF" maxlength="7">
+        <div class="terms-box">
+          <p class="terms-title">Terms of Use</p>
+          <p class="terms-text">
+            By continuing, you acknowledge and agree to the following terms and conditions governing Solution Integrators digital assets.<br><br>
+            This product is licensed for <strong>personal use only.</strong> You may not distribute, share, reproduce, copy, reverse engineer, or resell this asset or any portion of it in any form — whether modified or unmodified — without prior written consent from Solution Integrators.<br><br>
+            Unauthorized use, transfer, or reproduction of this asset is a violation of these terms and may result in immediate revocation of access.
+          </p>
         </div>
-      </div>
-      <div class="hol-field">
-        <label class="hol-label">Second Lightest <span class="hol-required">*</span></label>
-        <p class="hol-hint">Used behind content blocks like About Me</p>
-        <div class="hol-color-field">
-          <input type="color" class="hol-color-swatch" id="color2" value="#F5F5F0">
-          <input type="text" class="hol-color-text" id="color2-text" placeholder="#F5F5F0" maxlength="7">
-        </div>
-      </div>
-      <div class="hol-field">
-        <label class="hol-label">Darkest Color <span class="hol-required">*</span></label>
-        <p class="hol-hint">Text, borders, dark backgrounds</p>
-        <div class="hol-color-field">
-          <input type="color" class="hol-color-swatch" id="color3" value="#000000">
-          <input type="text" class="hol-color-text" id="color3-text" placeholder="#000000" maxlength="7">
-        </div>
-      </div>
-      <div class="hol-field">
-        <label class="hol-label">Second Darkest <span class="hol-required">*</span></label>
-        <p class="hol-hint">Accents and highlight elements</p>
-        <div class="hol-color-field">
-          <input type="color" class="hol-color-swatch" id="color4" value="#333333">
-          <input type="text" class="hol-color-text" id="color4-text" placeholder="#333333" maxlength="7">
-        </div>
+
+        <label class="checkbox-row" id="agree-row">
+          <input type="checkbox" id="agree-check">
+          <span>I have read and agree to the terms above. I understand this asset is for my personal use only and cannot be shared, redistributed, or resold.</span>
+        </label>
+
+        <button class="gate-btn" id="gate-btn" disabled onclick="enterApp()">
+          Continue to My Proposal
+        </button>
       </div>
     </div>
-
-    <hr class="hol-divider">
-    <p class="hol-subhead">Fonts</p>
-    <p class="hol-hint" style="margin-bottom: 1rem;">If using Google Fonts, paste the name exactly as it appears there (e.g. "Instrument Serif"). Leave blank if same as H1.</p>
-
-    <div class="hol-font-row">
-      <div class="hol-field">
-        <label class="hol-label">H1 Font <span class="hol-required">*</span></label>
-        <p class="hol-hint">Large display headings</p>
-        <input type="text" class="hol-input" id="font-h1" placeholder="e.g. Instrument Serif">
-      </div>
-      <div class="hol-field">
-        <label class="hol-label">H2 Font</label>
-        <p class="hol-hint">Section headings (often same as H1)</p>
-        <input type="text" class="hol-input" id="font-h2" placeholder="Same as H1">
-      </div>
-      <div class="hol-field">
-        <label class="hol-label">H3 Font</label>
-        <p class="hol-hint">Mid-level headings</p>
-        <input type="text" class="hol-input" id="font-h3" placeholder="Same as H1">
-      </div>
-      <div class="hol-field">
-        <label class="hol-label">H4 Font</label>
-        <p class="hol-hint">Labels, small headings (often sans-serif)</p>
-        <input type="text" class="hol-input" id="font-h4" placeholder="e.g. DM Sans">
-      </div>
-      <div class="hol-field">
-        <label class="hol-label">Paragraph Font <span class="hol-required">*</span></label>
-        <p class="hol-hint">All body text</p>
-        <input type="text" class="hol-input" id="font-p" placeholder="e.g. Jost">
-      </div>
-    </div>
-
-    <div class="hol-nav">
-      <button class="hol-btn-next" onclick="goNext()">Next <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
-    </div>
-  </div>
-
-  <!-- SECTION 1: Hero Banner -->
-  <div class="hol-section" id="section-1">
-    <div class="hol-section-header">
-      <div class="hol-section-icon"><i class="ti ti-layout-navbar" aria-hidden="true"></i></div>
-      <p class="hol-section-title">Hero Banner</p>
-    </div>
-    <p class="hol-section-desc">This is the first thing a potential client sees. The hero has a static heading with animated words that cycle through to complete the sentence.</p>
-
-    <div class="hol-field">
-      <label class="hol-label" for="brand-name">Brand Name <span class="hol-required">*</span></label>
-      <p class="hol-hint">Appears as a small label above the heading — usually just your business name</p>
-      <input type="text" class="hol-input" id="brand-name" placeholder="e.g. Bloom Studio Co.">
-    </div>
-
-    <div class="hol-field">
-      <label class="hol-label" for="hero-static">Static Heading Text <span class="hol-required">*</span></label>
-      <p class="hol-hint">The fixed part of the heading — the animated words will complete the sentence after this. Example: "Your brand deserves to be"</p>
-      <input type="text" class="hol-input" id="hero-static" placeholder="e.g. Built for brands that are ready to">
-    </div>
-
-    <div class="hol-field">
-      <label class="hol-label" for="hero-phrases">Animated Phrases <span class="hol-required">*</span></label>
-      <p class="hol-hint">Up to 6 words or short phrases that cycle through after your static heading. Put one per line. If you give fewer than 6, they'll repeat to fill the loop.</p>
-      <textarea class="hol-textarea" id="hero-phrases" placeholder="grow without the chaos&#10;do more of what they love&#10;build something real&#10;stop playing small" rows="6"></textarea>
-    </div>
-
-    <div class="hol-field">
-      <label class="hol-label" for="hero-para">Intro Paragraph</label>
-      <p class="hol-hint">A short statement below the heading that sets the tone. Leave blank to use the default.</p>
-      <textarea class="hol-textarea" id="hero-para" placeholder='Default: "You've got something real. A vision, a product, a business that actually means something..."'></textarea>
-    </div>
-
-    <div class="hol-field">
-      <label class="hol-label" for="hero-bg">Background Image URL <span class="hol-required">*</span></label>
-      <p class="hol-hint">Paste the direct URL to your image. Make sure it's publicly accessible.</p>
-      <input type="url" class="hol-input" id="hero-bg" placeholder="https://...">
-    </div>
-
-    <div class="hol-nav">
-      <button class="hol-btn-back" onclick="goBack()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
-      <button class="hol-btn-next" onclick="goNext()">Next <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
-    </div>
-  </div>
-
-  <!-- SECTION 2: Scrolling Banner -->
-  <div class="hol-section" id="section-2">
-    <div class="hol-section-header">
-      <div class="hol-section-icon"><i class="ti ti-marquee" aria-hidden="true"></i></div>
-      <p class="hol-section-title">Scrolling Banner</p>
-    </div>
-    <p class="hol-section-desc">A continuous scrolling strip between sections — usually a short phrase repeated in all caps with a symbol between each repetition.</p>
-
-    <div class="hol-field">
-      <label class="hol-label" for="marquee-text">Scrolling Text <span class="hol-required">*</span></label>
-      <p class="hol-hint">This phrase repeats in all caps across the banner. Default: "MADE TO BE IMPOSSIBLE TO IGNORE"</p>
-      <input type="text" class="hol-input" id="marquee-text" placeholder="e.g. BUILT TO BE UNFORGETTABLE">
-    </div>
-
-    <div class="hol-field">
-      <label class="hol-label" for="marquee-sep">Separator Symbol</label>
-      <p class="hol-hint">Appears between each repetition of the text. Can be an emoji, symbol, or character. Default: ·</p>
-      <input type="text" class="hol-input" id="marquee-sep" placeholder="e.g. ✦ or · or ★" style="max-width: 200px;">
-    </div>
-
-    <div class="hol-nav">
-      <button class="hol-btn-back" onclick="goBack()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
-      <button class="hol-btn-next" onclick="goNext()">Next <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
-    </div>
-  </div>
-
-  <!-- SECTION 3: About Me -->
-  <div class="hol-section" id="section-3">
-    <div class="hol-section-header">
-      <div class="hol-section-icon"><i class="ti ti-user-circle" aria-hidden="true"></i></div>
-      <p class="hol-section-title">About Me</p>
-    </div>
-    <p class="hol-section-desc">A two-column section with your photo on one side and your intro on the other. This is where clients get to know you before they commit.</p>
-
-    <div class="hol-field">
-      <label class="hol-label" for="about-photo">Photo URL <span class="hol-required">*</span></label>
-      <p class="hol-hint">Paste the direct URL to your headshot or brand photo</p>
-      <input type="url" class="hol-input" id="about-photo" placeholder="https://...">
-    </div>
-
-    <div class="hol-field">
-      <label class="hol-label" for="about-label">Small Label</label>
-      <p class="hol-hint">The small line above your heading — usually a greeting or your name. Default: "Hi, I'm Raye"</p>
-      <input type="text" class="hol-input" id="about-label" placeholder="e.g. Hi, I'm Sarah">
-    </div>
-
-    <div class="hol-field">
-      <label class="hol-label" for="about-heading">Main Heading <span class="hol-required">*</span></label>
-      <p class="hol-hint">Your bold intro statement — make it memorable</p>
-      <input type="text" class="hol-input" id="about-heading" placeholder="e.g. I turn scattered brands into something people can't forget.">
-    </div>
-
-    <div class="hol-field">
-      <label class="hol-label" for="about-text">About Me Paragraph(s) <span class="hol-required">*</span></label>
-      <p class="hol-hint">Tell them who you are, who you help, and why it matters. Type [break] where you want a paragraph break.</p>
-      <textarea class="hol-textarea" id="about-text" style="min-height: 120px;" placeholder="e.g. I've spent the last six years helping service-based businesses..."></textarea>
-    </div>
-
-    <div class="hol-nav">
-      <button class="hol-btn-back" onclick="goBack()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
-      <button class="hol-btn-next" onclick="goNext()">Next <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
-    </div>
-  </div>
-
-  <!-- SECTION 4: Process / Next Steps -->
-  <div class="hol-section" id="section-4">
-    <div class="hol-section-header">
-      <div class="hol-section-icon"><i class="ti ti-list-check" aria-hidden="true"></i></div>
-      <p class="hol-section-title">Process & Next Steps</p>
-    </div>
-    <p class="hol-section-desc">Two sections rolled into one — your client process (up to 6 phases with images) and your Next Steps box showing what happens after they say yes.</p>
-
-    <p class="hol-subhead">Client Process</p>
-
-    <div class="hol-field">
-      <label class="hol-label" for="process-count">How many phases?</label>
-      <p class="hol-hint">Between 3 and 6 — unused phases won't appear</p>
-      <select class="hol-select" id="process-count" style="max-width: 140px;">
-        <option value="3">3 phases</option>
-        <option value="4">4 phases</option>
-        <option value="5">5 phases</option>
-        <option value="6">6 phases</option>
-      </select>
-    </div>
-
-    <div id="process-phases">
-      <div class="hol-field" style="border: 0.5px solid var(--si-border); border-radius: var(--border-radius-md); padding: 1rem;">
-        <p class="hol-subhead" style="margin-bottom: 0.75rem;">Phase 1</p>
-        <div class="hol-field"><label class="hol-label" for="p1-label">Timeline Label</label><input type="text" class="hol-input" id="p1-label" placeholder="e.g. Week 1"></div>
-        <div class="hol-field"><label class="hol-label" for="p1-title">Phase Title <span class="hol-required">*</span></label><input type="text" class="hol-input" id="p1-title" placeholder="e.g. Discovery"></div>
-        <div class="hol-field"><label class="hol-label" for="p1-text">Description <span class="hol-required">*</span></label><textarea class="hol-textarea" id="p1-text" placeholder="What happens in this phase..."></textarea></div>
-        <div class="hol-field"><label class="hol-label" for="p1-img">Phase Image URL</label><input type="url" class="hol-input" id="p1-img" placeholder="https://..."></div>
-      </div>
-      <div class="hol-field" style="border: 0.5px solid var(--si-border); border-radius: var(--border-radius-md); padding: 1rem;">
-        <p class="hol-subhead" style="margin-bottom: 0.75rem;">Phase 2</p>
-        <div class="hol-field"><label class="hol-label" for="p2-label">Timeline Label</label><input type="text" class="hol-input" id="p2-label" placeholder="e.g. Weeks 2–3"></div>
-        <div class="hol-field"><label class="hol-label" for="p2-title">Phase Title <span class="hol-required">*</span></label><input type="text" class="hol-input" id="p2-title" placeholder="e.g. Strategy"></div>
-        <div class="hol-field"><label class="hol-label" for="p2-text">Description <span class="hol-required">*</span></label><textarea class="hol-textarea" id="p2-text" placeholder="What happens in this phase..."></textarea></div>
-        <div class="hol-field"><label class="hol-label" for="p2-img">Phase Image URL</label><input type="url" class="hol-input" id="p2-img" placeholder="https://..."></div>
-      </div>
-      <div class="hol-field" style="border: 0.5px solid var(--si-border); border-radius: var(--border-radius-md); padding: 1rem;">
-        <p class="hol-subhead" style="margin-bottom: 0.75rem;">Phase 3</p>
-        <div class="hol-field"><label class="hol-label" for="p3-label">Timeline Label</label><input type="text" class="hol-input" id="p3-label" placeholder="e.g. Month 2"></div>
-        <div class="hol-field"><label class="hol-label" for="p3-title">Phase Title <span class="hol-required">*</span></label><input type="text" class="hol-input" id="p3-title" placeholder="e.g. Design & Build"></div>
-        <div class="hol-field"><label class="hol-label" for="p3-text">Description <span class="hol-required">*</span></label><textarea class="hol-textarea" id="p3-text" placeholder="What happens in this phase..."></textarea></div>
-        <div class="hol-field"><label class="hol-label" for="p3-img">Phase Image URL</label><input type="url" class="hol-input" id="p3-img" placeholder="https://..."></div>
-      </div>
-    </div>
-
-    <hr class="hol-divider">
-    <p class="hol-subhead">Next Steps Box</p>
-    <p class="hol-hint" style="margin-bottom: 1rem;">Shows clients what to do after reading the proposal — typically Review, Sign, and Pay. Customize to fit your workflow.</p>
-
-    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
-      <div class="hol-field">
-        <label class="hol-label">Step 1</label>
-        <input type="text" class="hol-input" id="step1-num" placeholder="01" style="margin-bottom: 8px;">
-        <input type="text" class="hol-input" id="step1-title" placeholder="Title (e.g. Review)" style="margin-bottom: 8px;">
-        <textarea class="hol-textarea" id="step1-text" placeholder="Short description..." style="min-height: 70px;"></textarea>
-      </div>
-      <div class="hol-field">
-        <label class="hol-label">Step 2</label>
-        <input type="text" class="hol-input" id="step2-num" placeholder="02" style="margin-bottom: 8px;">
-        <input type="text" class="hol-input" id="step2-title" placeholder="Title (e.g. Sign)" style="margin-bottom: 8px;">
-        <textarea class="hol-textarea" id="step2-text" placeholder="Short description..." style="min-height: 70px;"></textarea>
-      </div>
-      <div class="hol-field">
-        <label class="hol-label">Step 3</label>
-        <input type="text" class="hol-input" id="step3-num" placeholder="03" style="margin-bottom: 8px;">
-        <input type="text" class="hol-input" id="step3-title" placeholder="Title (e.g. Pay)" style="margin-bottom: 8px;">
-        <textarea class="hol-textarea" id="step3-text" placeholder="Short description..." style="min-height: 70px;"></textarea>
-      </div>
-    </div>
-
-    <div class="hol-nav">
-      <button class="hol-btn-back" onclick="goBack()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
-      <button class="hol-btn-next" onclick="goNext()">Next <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
-    </div>
-  </div>
-
-  <!-- SECTION 5: Before & After + Testimonials -->
-  <div class="hol-section" id="section-5">
-    <div class="hol-section-header">
-      <div class="hol-section-icon"><i class="ti ti-adjustments-horizontal" aria-hidden="true"></i></div>
-      <p class="hol-section-title">Before & After + Testimonials</p>
-    </div>
-
-    <p class="hol-subhead">Before & After Slider</p>
-    <p class="hol-hint" style="margin-bottom: 1rem;">An interactive drag slider showing client transformation — typically before and after a rebrand or project.</p>
-
-    <div class="hol-field">
-      <label class="hol-label" for="ba-before">Before Image URL <span class="hol-required">*</span></label>
-      <input type="url" class="hol-input" id="ba-before" placeholder="https://...">
-    </div>
-
-    <div class="hol-field">
-      <label class="hol-label" for="ba-after">After Image URL <span class="hol-required">*</span></label>
-      <input type="url" class="hol-input" id="ba-after" placeholder="https://...">
-    </div>
-
-    <hr class="hol-divider">
-    <p class="hol-subhead">Testimonials</p>
-
-    <div class="hol-field">
-      <label class="hol-label" for="testi-bg">Background Image URL</label>
-      <p class="hol-hint">The image behind your testimonials section — dark overlay is applied automatically</p>
-      <input type="url" class="hol-input" id="testi-bg" placeholder="https://...">
-    </div>
-
-    <div class="hol-field">
-      <label class="hol-label" for="testi-count">How many testimonials?</label>
-      <select class="hol-select" id="testi-count" style="max-width: 140px;" onchange="renderTestiFields()">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3" selected>3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
-    </div>
-
-    <div id="testi-fields"></div>
-
-    <div class="hol-nav">
-      <button class="hol-btn-back" onclick="goBack()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
-      <button class="hol-btn-next" onclick="goNext()">Review & Copy <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
-    </div>
-  </div>
-
-  <!-- SECTION 6: Final Review -->
-  <div class="hol-section" id="section-6">
-    <div class="hol-section-header">
-      <div class="hol-section-icon"><i class="ti ti-check" aria-hidden="true"></i></div>
-      <p class="hol-section-title">Review & Submit</p>
-    </div>
-    <p class="hol-section-desc" style="margin-bottom: 1.25rem;">Everything looks good? Copy your responses below and paste them into the SI Form Assistant to get your proposal code — section by section.</p>
-
-    <div class="hol-summary" id="summary-output">
-      <p style="font-size: 13px; color: var(--color-text-secondary);">Loading your responses...</p>
-    </div>
-
-    <div class="hol-nav">
-      <button class="hol-btn-back" onclick="goBack()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
-      <span class="hol-copied-msg" id="copied-msg">Copied to clipboard!</span>
-      <button class="hol-btn-copy" id="copy-btn" onclick="copyAll()"><i class="ti ti-copy" aria-hidden="true"></i> Copy All Responses</button>
-    </div>
+    <p class="gate-footer">Solution Integrators &nbsp;·&nbsp; assets.solutionintegrators.us</p>
   </div>
 </div>
+
+<!-- ════════════════════════════════
+     MAIN APP
+════════════════════════════════ -->
+<div id="app">
+  <nav class="app-nav">
+    <span class="app-nav-brand">Solution Integrators</span>
+    <span class="app-nav-proposal" id="nav-proposal-name"></span>
+  </nav>
+
+  <div class="app-inner">
+
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label" id="progress-section-name">Brand Setup</span>
+        <span class="progress-count" id="progress-count">Step 1 of 7</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill" style="width: 14.28%"></div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 0: Brand Colors & Fonts ── -->
+    <div class="form-section active" id="section-0">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+        </div>
+        <p class="section-title">Brand Colors & Fonts</p>
+      </div>
+      <p class="section-desc">These values connect to every section of your proposal. Get them right here and your branding flows through automatically.</p>
+
+      <p class="subhead">Colors</p>
+      <div class="color-grid">
+        <div class="field">
+          <label class="field-label">Lightest Color <span class="req">*</span></label>
+          <p class="field-hint">Usually your background or white</p>
+          <div class="color-field-wrap">
+            <input type="color" class="color-swatch" id="c1" value="#FFFFFF">
+            <input type="text" class="color-text" id="c1t" placeholder="#FFFFFF" maxlength="7">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Second Lightest <span class="req">*</span></label>
+          <p class="field-hint">Behind content blocks like About Me</p>
+          <div class="color-field-wrap">
+            <input type="color" class="color-swatch" id="c2" value="#F5F5F0">
+            <input type="text" class="color-text" id="c2t" placeholder="#F5F5F0" maxlength="7">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Darkest Color <span class="req">*</span></label>
+          <p class="field-hint">Text, borders, dark backgrounds</p>
+          <div class="color-field-wrap">
+            <input type="color" class="color-swatch" id="c3" value="#111111">
+            <input type="text" class="color-text" id="c3t" placeholder="#111111" maxlength="7">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Second Darkest <span class="req">*</span></label>
+          <p class="field-hint">Accents and highlight elements</p>
+          <div class="color-field-wrap">
+            <input type="color" class="color-swatch" id="c4" value="#333333">
+            <input type="text" class="color-text" id="c4t" placeholder="#333333" maxlength="7">
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+      <p class="subhead">Fonts</p>
+      <p class="field-hint" style="margin-bottom: 16px;">Use the exact name as it appears on Google Fonts — e.g. "Instrument Serif". Leave H2/H3 blank to inherit H1.</p>
+      <div class="font-grid">
+        <div class="field">
+          <label class="field-label">H1 <span class="req">*</span></label>
+          <p class="field-hint">Large display headings</p>
+          <input type="text" class="field-input" id="fh1" placeholder="e.g. Cormorant">
+        </div>
+        <div class="field">
+          <label class="field-label">H2</label>
+          <p class="field-hint">Section headings</p>
+          <input type="text" class="field-input" id="fh2" placeholder="Same as H1">
+        </div>
+        <div class="field">
+          <label class="field-label">H3</label>
+          <p class="field-hint">Mid-level headings</p>
+          <input type="text" class="field-input" id="fh3" placeholder="Same as H1">
+        </div>
+        <div class="field">
+          <label class="field-label">H4</label>
+          <p class="field-hint">Labels, small headings</p>
+          <input type="text" class="field-input" id="fh4" placeholder="e.g. DM Sans">
+        </div>
+        <div class="field">
+          <label class="field-label">Paragraph <span class="req">*</span></label>
+          <p class="field-hint">All body text</p>
+          <input type="text" class="field-input" id="fp" placeholder="e.g. Jost">
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-next" onclick="goNext()">Next &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ── SECTION 1: Hero Banner ── -->
+    <div class="form-section" id="section-1">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <p class="section-title">Hero Banner</p>
+      </div>
+      <p class="section-desc">The first thing a potential client sees. A full-screen banner with a static heading and animated cycling words that complete the sentence.</p>
+
+      <div class="field">
+        <label class="field-label" for="brand-name">Brand Name <span class="req">*</span></label>
+        <p class="field-hint">Appears as a small label above the heading — usually just your business name</p>
+        <input type="text" class="field-input" id="brand-name" placeholder="e.g. Bloom Studio Co.">
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="hero-static">Static Heading Text <span class="req">*</span></label>
+        <p class="field-hint">The fixed part of the heading. The animated words complete the sentence after this. Example: "Your brand deserves to be"</p>
+        <input type="text" class="field-input" id="hero-static" placeholder="e.g. Built for brands that are ready to">
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="hero-phrases">Animated Phrases <span class="req">*</span></label>
+        <p class="field-hint">Up to 6 words or short phrases that cycle through after your static heading. One per line. Fewer than 6 will repeat to fill the loop.</p>
+        <textarea class="field-textarea" id="hero-phrases" rows="6" placeholder="grow without the chaos&#10;do more of what they love&#10;build something real&#10;stop playing small"></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="hero-para">Intro Paragraph</label>
+        <p class="field-hint">Short statement below the heading that sets the tone. Leave blank to use the default text.</p>
+        <textarea class="field-textarea" id="hero-para" placeholder='Leave blank for default, or write your own...'></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="hero-bg">Background Image URL <span class="req">*</span></label>
+        <p class="field-hint">Paste a direct, publicly accessible image URL</p>
+        <input type="url" class="field-input" id="hero-bg" placeholder="https://...">
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-back" onclick="goBack()">&larr; Back</button>
+        <button class="btn-next" onclick="goNext()">Next &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ── SECTION 2: Scrolling Banner ── -->
+    <div class="form-section" id="section-2">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M15 8l4 4-4 4"/></svg>
+        </div>
+        <p class="section-title">Scrolling Banner</p>
+      </div>
+      <p class="section-desc">A continuous scrolling strip between sections — a short phrase repeated in all caps with a separator symbol between each repetition.</p>
+
+      <div class="field">
+        <label class="field-label" for="marquee-text">Scrolling Text <span class="req">*</span></label>
+        <p class="field-hint">Repeats in all caps. Default: "MADE TO BE IMPOSSIBLE TO IGNORE"</p>
+        <input type="text" class="field-input" id="marquee-text" placeholder="e.g. BUILT TO BE UNFORGETTABLE">
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="marquee-sep">Separator Symbol</label>
+        <p class="field-hint">Appears between each repetition. Can be an emoji, symbol, or character. Default: ·</p>
+        <input type="text" class="field-input" id="marquee-sep" placeholder="e.g. ✦ or · or ★" style="max-width: 220px;">
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-back" onclick="goBack()">&larr; Back</button>
+        <button class="btn-next" onclick="goNext()">Next &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ── SECTION 3: About Me ── -->
+    <div class="form-section" id="section-3">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div>
+        <p class="section-title">About Me</p>
+      </div>
+      <p class="section-desc">A two-column section — your photo on one side, your intro on the other. This is where clients get to know you before they commit.</p>
+
+      <div class="field">
+        <label class="field-label" for="about-photo">Photo URL <span class="req">*</span></label>
+        <p class="field-hint">Direct URL to your headshot or brand photo</p>
+        <input type="url" class="field-input" id="about-photo" placeholder="https://...">
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="about-label">Small Label</label>
+        <p class="field-hint">Small line above your heading — usually a greeting or your name. Default: "Hi, I'm Raye"</p>
+        <input type="text" class="field-input" id="about-label" placeholder="e.g. Hi, I'm Sarah">
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="about-heading">Main Heading <span class="req">*</span></label>
+        <p class="field-hint">Your bold intro statement — make it memorable</p>
+        <input type="text" class="field-input" id="about-heading" placeholder="e.g. I turn scattered brands into something people can't forget.">
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="about-text">About Me Paragraph(s) <span class="req">*</span></label>
+        <p class="field-hint">Who you are, who you help, and why it matters. Type [break] where you want a paragraph break.</p>
+        <textarea class="field-textarea" id="about-text" style="min-height: 130px;" placeholder="e.g. I've spent the last six years helping service-based businesses..."></textarea>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-back" onclick="goBack()">&larr; Back</button>
+        <button class="btn-next" onclick="goNext()">Next &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ── SECTION 4: Process & Next Steps ── -->
+    <div class="form-section" id="section-4">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <p class="section-title">Process & Next Steps</p>
+      </div>
+      <p class="section-desc">Your client process (up to 6 phases with images) and your Next Steps box showing what happens after they say yes.</p>
+
+      <p class="subhead">Client Process</p>
+
+      <div class="field" style="max-width: 200px;">
+        <label class="field-label" for="phase-count">Number of Phases</label>
+        <select class="field-select" id="phase-count" onchange="renderPhases()">
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+      </div>
+
+      <div id="phase-blocks"></div>
+
+      <hr class="divider">
+      <p class="subhead">Next Steps</p>
+      <p class="field-hint" style="margin-bottom: 16px;">What happens after they read the proposal — typically Review, Sign, and Pay. Customize to fit your flow.</p>
+
+      <div class="steps-grid-3">
+        <div>
+          <p class="field-label" style="margin-bottom: 10px;">Step 1</p>
+          <input type="text" class="field-input" id="s1n" placeholder="01" style="margin-bottom: 8px;">
+          <input type="text" class="field-input" id="s1t" placeholder="Title (e.g. Review)" style="margin-bottom: 8px;">
+          <textarea class="field-textarea" id="s1d" style="min-height: 75px;" placeholder="Short description..."></textarea>
+        </div>
+        <div>
+          <p class="field-label" style="margin-bottom: 10px;">Step 2</p>
+          <input type="text" class="field-input" id="s2n" placeholder="02" style="margin-bottom: 8px;">
+          <input type="text" class="field-input" id="s2t" placeholder="Title (e.g. Sign)" style="margin-bottom: 8px;">
+          <textarea class="field-textarea" id="s2d" style="min-height: 75px;" placeholder="Short description..."></textarea>
+        </div>
+        <div>
+          <p class="field-label" style="margin-bottom: 10px;">Step 3</p>
+          <input type="text" class="field-input" id="s3n" placeholder="03" style="margin-bottom: 8px;">
+          <input type="text" class="field-input" id="s3t" placeholder="Title (e.g. Pay)" style="margin-bottom: 8px;">
+          <textarea class="field-textarea" id="s3d" style="min-height: 75px;" placeholder="Short description..."></textarea>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-back" onclick="goBack()">&larr; Back</button>
+        <button class="btn-next" onclick="goNext()">Next &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ── SECTION 5: Before & After + Testimonials ── -->
+    <div class="form-section" id="section-5">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <p class="section-title">Before & After + Testimonials</p>
+      </div>
+
+      <p class="subhead">Before & After Slider</p>
+      <p class="field-hint" style="margin-bottom: 16px;">An interactive drag slider — typically showing a before and after of a rebrand or project.</p>
+
+      <div class="field">
+        <label class="field-label" for="ba-before">Before Image URL <span class="req">*</span></label>
+        <input type="url" class="field-input" id="ba-before" placeholder="https://...">
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="ba-after">After Image URL <span class="req">*</span></label>
+        <input type="url" class="field-input" id="ba-after" placeholder="https://...">
+      </div>
+
+      <hr class="divider">
+      <p class="subhead">Testimonials</p>
+
+      <div class="field">
+        <label class="field-label" for="testi-bg">Background Image URL</label>
+        <p class="field-hint">Image behind the testimonials section — dark overlay applied automatically</p>
+        <input type="url" class="field-input" id="testi-bg" placeholder="https://...">
+      </div>
+
+      <div class="field" style="max-width: 200px;">
+        <label class="field-label" for="testi-count">Number of Testimonials</label>
+        <select class="field-select" id="testi-count" onchange="renderTestis()">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+
+      <div id="testi-blocks"></div>
+
+      <div class="nav-row">
+        <button class="btn-back" onclick="goBack()">&larr; Back</button>
+        <button class="btn-next" onclick="goNext()">Review &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ── SECTION 6: Review & Copy ── -->
+    <div class="form-section" id="section-6">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <p class="section-title">Review & Copy</p>
+      </div>
+      <p class="section-desc" style="margin-bottom: 28px;">Everything look right? Copy your responses below, then paste them into the SI Form Assistant to get your proposal code — section by section.</p>
+
+      <div class="copy-wrap">
+        <div class="copy-msg">
+          <strong>Ready to build your proposal</strong>
+          Copy your responses, then open the SI Form Assistant and paste them in. The assistant will generate your code blocks one section at a time.
+        </div>
+        <button class="btn-copy" onclick="copyAll()">Copy All</button>
+      </div>
+      <p class="copied-toast" id="copied-toast">Copied to clipboard!</p>
+
+      <div class="summary-card" id="summary-output"></div>
+
+      <div class="nav-row">
+        <button class="btn-back" onclick="goBack()">&larr; Back</button>
+      </div>
+    </div>
+
+  </div><!-- /app-inner -->
+</div><!-- /app -->
 
 <script>
   var currentStep = 0;
   var totalSteps = 7;
+  var selectedProposal = '';
 
+  var sectionNames = [
+    'Brand Colors & Fonts',
+    'Hero Banner',
+    'Scrolling Banner',
+    'About Me',
+    'Process & Next Steps',
+    'Before & After + Testimonials',
+    'Review & Copy'
+  ];
+
+  // ── Gate logic ──
+  var agreeCheck = document.getElementById('agree-check');
+  var proposalSelect = document.getElementById('proposal-select');
+  var gateBtn = document.getElementById('gate-btn');
+
+  function updateGateBtn() {
+    gateBtn.disabled = !(agreeCheck.checked && proposalSelect.value !== '');
+  }
+
+  agreeCheck.addEventListener('change', updateGateBtn);
+  proposalSelect.addEventListener('change', updateGateBtn);
+
+  function enterApp() {
+    selectedProposal = proposalSelect.value;
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('nav-proposal-name').textContent = selectedProposal;
+    renderPhases();
+    renderTestis();
+    syncColors();
+    window.scrollTo(0, 0);
+  }
+
+  // ── Color sync ──
+  function syncColors() {
+    [['c1','c1t'],['c2','c2t'],['c3','c3t'],['c4','c4t']].forEach(function(pair) {
+      var swatch = document.getElementById(pair[0]);
+      var text = document.getElementById(pair[1]);
+      text.value = swatch.value.toUpperCase();
+      swatch.addEventListener('input', function() { text.value = swatch.value.toUpperCase(); });
+      text.addEventListener('input', function() {
+        if (/^#[0-9A-Fa-f]{6}$/.test(text.value)) swatch.value = text.value;
+      });
+    });
+  }
+
+  // ── Navigation ──
   function updateProgress() {
-    for (var i = 0; i < totalSteps; i++) {
-      var dot = document.getElementById('dot-' + i);
-      if (i < currentStep) { dot.className = 'hol-step-dot done'; }
-      else if (i === currentStep) { dot.className = 'hol-step-dot active'; }
-      else { dot.className = 'hol-step-dot'; }
-    }
-    document.getElementById('step-label').textContent = 'Step ' + (currentStep + 1) + ' of ' + totalSteps;
+    var pct = ((currentStep + 1) / totalSteps * 100).toFixed(2);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-section-name').textContent = sectionNames[currentStep];
+    document.getElementById('progress-count').textContent = 'Step ' + (currentStep + 1) + ' of ' + totalSteps;
   }
 
   function goNext() {
-    if (currentStep < totalSteps - 1) {
-      document.getElementById('section-' + currentStep).classList.remove('active');
-      currentStep++;
-      document.getElementById('section-' + currentStep).classList.add('active');
-      updateProgress();
-      if (currentStep === totalSteps - 1) { buildSummary(); }
-      window.scrollTo(0, 0);
-    }
+    document.getElementById('section-' + currentStep).classList.remove('active');
+    currentStep++;
+    document.getElementById('section-' + currentStep).classList.add('active');
+    updateProgress();
+    if (currentStep === totalSteps - 1) buildSummary();
+    window.scrollTo(0, 0);
   }
 
   function goBack() {
-    if (currentStep > 0) {
-      document.getElementById('section-' + currentStep).classList.remove('active');
-      currentStep--;
-      document.getElementById('section-' + currentStep).classList.add('active');
-      updateProgress();
-      window.scrollTo(0, 0);
-    }
+    document.getElementById('section-' + currentStep).classList.remove('active');
+    currentStep--;
+    document.getElementById('section-' + currentStep).classList.add('active');
+    updateProgress();
+    window.scrollTo(0, 0);
   }
 
-  function syncColor(swatchId, textId) {
-    var swatch = document.getElementById(swatchId);
-    var text = document.getElementById(textId);
-    swatch.addEventListener('input', function() { text.value = swatch.value.toUpperCase(); });
-    text.addEventListener('input', function() {
-      var v = text.value;
-      if (/^#[0-9A-Fa-f]{6}$/.test(v)) { swatch.value = v; }
-    });
-    text.value = swatch.value.toUpperCase();
-  }
-
-  syncColor('color1', 'color1-text');
-  syncColor('color2', 'color2-text');
-  syncColor('color3', 'color3-text');
-  syncColor('color4', 'color4-text');
-
-  function renderTestiFields() {
-    var count = parseInt(document.getElementById('testi-count').value);
-    var container = document.getElementById('testi-fields');
+  // ── Dynamic phase blocks ──
+  function renderPhases() {
+    var count = parseInt(document.getElementById('phase-count').value || 3);
+    var container = document.getElementById('phase-blocks');
     container.innerHTML = '';
     for (var i = 1; i <= count; i++) {
-      container.innerHTML += '<div class="hol-field" style="border: 0.5px solid var(--si-border); border-radius: var(--border-radius-md); padding: 1rem; margin-bottom: 12px;">' +
-        '<p class="hol-subhead" style="margin-bottom: 0.75rem;">Testimonial ' + i + '</p>' +
-        '<div class="hol-field"><label class="hol-label">Client Photo URL</label><input type="url" class="hol-input" id="t' + i + '-photo" placeholder="https://..."></div>' +
-        '<div class="hol-field"><label class="hol-label">Quote Headline <span class="hol-required">*</span></label><p class="hol-hint">Short, punchy — appears large above the full quote. e.g. "Worth every single penny"</p><input type="text" class="hol-input" id="t' + i + '-headline" placeholder="e.g. A total transformation"></div>' +
-        '<div class="hol-field"><label class="hol-label">Full Testimonial <span class="hol-required">*</span></label><textarea class="hol-textarea" id="t' + i + '-full" placeholder="The full quote text..."></textarea></div>' +
-        '<div class="hol-field"><label class="hol-label">Client Name <span class="hol-required">*</span></label><input type="text" class="hol-input" id="t' + i + '-name" placeholder="e.g. Jamie L."></div>' +
+      container.innerHTML +=
+        '<div class="phase-block">' +
+          '<p class="phase-block-title">Phase ' + i + '</p>' +
+          '<div class="field"><label class="field-label">Timeline Label</label><input type="text" class="field-input" id="ph' + i + 'l" placeholder="e.g. Week ' + i + '"></div>' +
+          '<div class="field"><label class="field-label">Phase Title <span class="req">*</span></label><input type="text" class="field-input" id="ph' + i + 't" placeholder="e.g. Discovery"></div>' +
+          '<div class="field"><label class="field-label">Description <span class="req">*</span></label><textarea class="field-textarea" id="ph' + i + 'd" placeholder="What happens in this phase..."></textarea></div>' +
+          '<div class="field"><label class="field-label">Phase Image URL</label><input type="url" class="field-input" id="ph' + i + 'i" placeholder="https://..."></div>' +
         '</div>';
     }
   }
 
-  renderTestiFields();
-
-  function getVal(id) {
-    var el = document.getElementById(id);
-    if (!el) return '';
-    return (el.value || '').trim();
+  // ── Dynamic testi blocks ──
+  function renderTestis() {
+    var count = parseInt(document.getElementById('testi-count').value || 3);
+    var container = document.getElementById('testi-blocks');
+    container.innerHTML = '';
+    for (var i = 1; i <= count; i++) {
+      container.innerHTML +=
+        '<div class="testi-block">' +
+          '<p class="testi-block-title">Testimonial ' + i + '</p>' +
+          '<div class="field"><label class="field-label">Client Photo URL</label><input type="url" class="field-input" id="ti' + i + 'p" placeholder="https://..."></div>' +
+          '<div class="field"><label class="field-label">Quote Headline <span class="req">*</span></label><p class="field-hint">Short and punchy — appears large above the full quote</p><input type="text" class="field-input" id="ti' + i + 'h" placeholder="e.g. Worth every single penny"></div>' +
+          '<div class="field"><label class="field-label">Full Testimonial <span class="req">*</span></label><textarea class="field-textarea" id="ti' + i + 'f" placeholder="The full quote text..."></textarea></div>' +
+          '<div class="field"><label class="field-label">Client Name <span class="req">*</span></label><input type="text" class="field-input" id="ti' + i + 'n" placeholder="e.g. Jamie L."></div>' +
+        '</div>';
+    }
   }
 
-  function row(key, val) {
-    if (!val) return '';
-    return '<div class="hol-summary-row"><span class="hol-summary-key">' + key + '</span><span class="hol-summary-val">' + val + '</span></div>';
-  }
+  // ── Summary builder ──
+  function g(id) { var el = document.getElementById(id); return el ? (el.value || '').trim() : ''; }
 
   function buildSummary() {
-    var tiCount = parseInt(document.getElementById('testi-count').value);
-    var phCount = parseInt(document.getElementById('process-count').value);
+    var phCount = parseInt(document.getElementById('phase-count').value || 3);
+    var tiCount = parseInt(document.getElementById('testi-count').value || 3);
+
+    function sectionHead(title) {
+      return '<div class="summary-section-head">' + title + '</div>';
+    }
+    function row(key, val) {
+      if (!val) return '';
+      return '<div class="summary-row"><span class="summary-key">' + key + '</span><span class="summary-val">' + escHtml(val) + '</span></div>';
+    }
+    function escHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
 
     var html = '';
 
-    html += '<p class="hol-subhead" style="margin-bottom: 0.75rem;">Brand Setup</p>';
-    html += row('Lightest color', getVal('color1-text'));
-    html += row('Second lightest', getVal('color2-text'));
-    html += row('Darkest color', getVal('color3-text'));
-    html += row('Second darkest', getVal('color4-text'));
-    html += row('H1 font', getVal('font-h1'));
-    html += row('H2 font', getVal('font-h2') || '(same as H1)');
-    html += row('H3 font', getVal('font-h3') || '(same as H1)');
-    html += row('H4 font', getVal('font-h4'));
-    html += row('Paragraph font', getVal('font-p'));
+    html += sectionHead('Brand Colors & Fonts');
+    html += row('Lightest color', g('c1t'));
+    html += row('Second lightest', g('c2t'));
+    html += row('Darkest color', g('c3t'));
+    html += row('Second darkest', g('c4t'));
+    html += row('H1 font', g('fh1'));
+    html += row('H2 font', g('fh2') || 'Same as H1');
+    html += row('H3 font', g('fh3') || 'Same as H1');
+    html += row('H4 font', g('fh4'));
+    html += row('Paragraph font', g('fp'));
 
-    html += '<hr class="hol-divider"><p class="hol-subhead" style="margin-bottom: 0.75rem;">Hero Banner</p>';
-    html += row('Brand name', getVal('brand-name'));
-    html += row('Static heading', getVal('hero-static'));
-    html += row('Animated phrases', getVal('hero-phrases').replace(/\n/g, ', '));
-    html += row('Intro paragraph', getVal('hero-para') || '(using default)');
-    html += row('Background image', getVal('hero-bg'));
+    html += sectionHead('Hero Banner');
+    html += row('Brand name', g('brand-name'));
+    html += row('Static heading', g('hero-static'));
+    html += row('Animated phrases', g('hero-phrases'));
+    html += row('Intro paragraph', g('hero-para') || '[Use default text]');
+    html += row('Background image', g('hero-bg'));
 
-    html += '<hr class="hol-divider"><p class="hol-subhead" style="margin-bottom: 0.75rem;">Scrolling Banner</p>';
-    html += row('Scrolling text', getVal('marquee-text'));
-    html += row('Separator', getVal('marquee-sep') || '(default: ·)');
+    html += sectionHead('Scrolling Banner');
+    html += row('Scrolling text', g('marquee-text'));
+    html += row('Separator', g('marquee-sep') || '· (default)');
 
-    html += '<hr class="hol-divider"><p class="hol-subhead" style="margin-bottom: 0.75rem;">About Me</p>';
-    html += row('Photo URL', getVal('about-photo'));
-    html += row('Label', getVal('about-label'));
-    html += row('Heading', getVal('about-heading'));
-    html += row('About text', getVal('about-text'));
+    html += sectionHead('About Me');
+    html += row('Photo URL', g('about-photo'));
+    html += row('Label', g('about-label'));
+    html += row('Heading', g('about-heading'));
+    html += row('About text', g('about-text'));
 
-    html += '<hr class="hol-divider"><p class="hol-subhead" style="margin-bottom: 0.75rem;">Process Phases (' + phCount + ')</p>';
+    html += sectionHead('Client Process — ' + phCount + ' Phases');
     for (var p = 1; p <= phCount; p++) {
-      html += row('Phase ' + p + ' label', getVal('p' + p + '-label'));
-      html += row('Phase ' + p + ' title', getVal('p' + p + '-title'));
-      html += row('Phase ' + p + ' desc', getVal('p' + p + '-text'));
-      html += row('Phase ' + p + ' image', getVal('p' + p + '-img'));
+      html += row('Phase ' + p + ' label', g('ph' + p + 'l'));
+      html += row('Phase ' + p + ' title', g('ph' + p + 't'));
+      html += row('Phase ' + p + ' description', g('ph' + p + 'd'));
+      html += row('Phase ' + p + ' image', g('ph' + p + 'i'));
     }
 
-    html += '<hr class="hol-divider"><p class="hol-subhead" style="margin-bottom: 0.75rem;">Next Steps</p>';
+    html += sectionHead('Next Steps');
     for (var s = 1; s <= 3; s++) {
-      html += row('Step ' + s, (getVal('step' + s + '-num') || s) + ' — ' + getVal('step' + s + '-title') + ': ' + getVal('step' + s + '-text'));
+      html += row('Step ' + s + ' number', g('s' + s + 'n'));
+      html += row('Step ' + s + ' title', g('s' + s + 't'));
+      html += row('Step ' + s + ' description', g('s' + s + 'd'));
     }
 
-    html += '<hr class="hol-divider"><p class="hol-subhead" style="margin-bottom: 0.75rem;">Before & After</p>';
-    html += row('Before image', getVal('ba-before'));
-    html += row('After image', getVal('ba-after'));
+    html += sectionHead('Before & After');
+    html += row('Before image', g('ba-before'));
+    html += row('After image', g('ba-after'));
 
-    html += '<hr class="hol-divider"><p class="hol-subhead" style="margin-bottom: 0.75rem;">Testimonials (' + tiCount + ')</p>';
-    html += row('Background image', getVal('testi-bg'));
+    html += sectionHead('Testimonials — ' + tiCount + ' Total');
+    html += row('Background image', g('testi-bg'));
     for (var t = 1; t <= tiCount; t++) {
-      html += row('Testimonial ' + t + ' photo', getVal('t' + t + '-photo'));
-      html += row('Testimonial ' + t + ' headline', getVal('t' + t + '-headline'));
-      html += row('Testimonial ' + t + ' full text', getVal('t' + t + '-full'));
-      html += row('Testimonial ' + t + ' name', getVal('t' + t + '-name'));
+      html += row('Testimonial ' + t + ' photo', g('ti' + t + 'p'));
+      html += row('Testimonial ' + t + ' headline', g('ti' + t + 'h'));
+      html += row('Testimonial ' + t + ' full text', g('ti' + t + 'f'));
+      html += row('Testimonial ' + t + ' name', g('ti' + t + 'n'));
     }
 
     document.getElementById('summary-output').innerHTML = html;
   }
 
   function buildPlainText() {
-    var tiCount = parseInt(document.getElementById('testi-count').value);
-    var phCount = parseInt(document.getElementById('process-count').value);
+    var phCount = parseInt(document.getElementById('phase-count').value || 3);
+    var tiCount = parseInt(document.getElementById('testi-count').value || 3);
     var lines = [];
 
-    lines.push('=== HOUSE OF LUME PROPOSAL INSTALL — INTAKE RESPONSES ===\n');
-    lines.push('--- BRAND SETUP ---');
-    lines.push('Lightest color: ' + getVal('color1-text'));
-    lines.push('Second lightest: ' + getVal('color2-text'));
-    lines.push('Darkest color: ' + getVal('color3-text'));
-    lines.push('Second darkest: ' + getVal('color4-text'));
-    lines.push('H1 font: ' + getVal('font-h1'));
-    lines.push('H2 font: ' + (getVal('font-h2') || 'same as H1'));
-    lines.push('H3 font: ' + (getVal('font-h3') || 'same as H1'));
-    lines.push('H4 font: ' + getVal('font-h4'));
-    lines.push('Paragraph font: ' + getVal('font-p'));
+    lines.push('=== SI PROPOSAL INTAKE — ' + selectedProposal.toUpperCase() + ' ===');
+    lines.push('');
+    lines.push('--- BRAND COLORS & FONTS ---');
+    lines.push('Lightest color: ' + g('c1t'));
+    lines.push('Second lightest: ' + g('c2t'));
+    lines.push('Darkest color: ' + g('c3t'));
+    lines.push('Second darkest: ' + g('c4t'));
+    lines.push('H1 font: ' + g('fh1'));
+    lines.push('H2 font: ' + (g('fh2') || 'Same as H1'));
+    lines.push('H3 font: ' + (g('fh3') || 'Same as H1'));
+    lines.push('H4 font: ' + g('fh4'));
+    lines.push('Paragraph font: ' + g('fp'));
 
-    lines.push('\n--- HERO BANNER ---');
-    lines.push('Brand name: ' + getVal('brand-name'));
-    lines.push('Static heading: ' + getVal('hero-static'));
-    lines.push('Animated phrases:\n' + getVal('hero-phrases'));
-    lines.push('Intro paragraph: ' + (getVal('hero-para') || '[use default]'));
-    lines.push('Background image: ' + getVal('hero-bg'));
+    lines.push('');
+    lines.push('--- HERO BANNER ---');
+    lines.push('Brand name: ' + g('brand-name'));
+    lines.push('Static heading: ' + g('hero-static'));
+    lines.push('Animated phrases:');
+    lines.push(g('hero-phrases'));
+    lines.push('Intro paragraph: ' + (g('hero-para') || '[Use default text]'));
+    lines.push('Background image: ' + g('hero-bg'));
 
-    lines.push('\n--- SCROLLING BANNER ---');
-    lines.push('Text: ' + getVal('marquee-text'));
-    lines.push('Separator: ' + (getVal('marquee-sep') || '·'));
+    lines.push('');
+    lines.push('--- SCROLLING BANNER ---');
+    lines.push('Scrolling text: ' + g('marquee-text'));
+    lines.push('Separator: ' + (g('marquee-sep') || '·'));
 
-    lines.push('\n--- ABOUT ME ---');
-    lines.push('Photo: ' + getVal('about-photo'));
-    lines.push('Label: ' + getVal('about-label'));
-    lines.push('Heading: ' + getVal('about-heading'));
-    lines.push('About text: ' + getVal('about-text'));
+    lines.push('');
+    lines.push('--- ABOUT ME ---');
+    lines.push('Photo URL: ' + g('about-photo'));
+    lines.push('Label: ' + g('about-label'));
+    lines.push('Heading: ' + g('about-heading'));
+    lines.push('About text: ' + g('about-text'));
 
-    lines.push('\n--- PROCESS PHASES (' + phCount + ') ---');
+    lines.push('');
+    lines.push('--- CLIENT PROCESS (' + phCount + ' PHASES) ---');
     for (var p = 1; p <= phCount; p++) {
-      lines.push('Phase ' + p + ' timeline: ' + getVal('p' + p + '-label'));
-      lines.push('Phase ' + p + ' title: ' + getVal('p' + p + '-title'));
-      lines.push('Phase ' + p + ' description: ' + getVal('p' + p + '-text'));
-      lines.push('Phase ' + p + ' image: ' + getVal('p' + p + '-img'));
+      lines.push('Phase ' + p + ' label: ' + g('ph' + p + 'l'));
+      lines.push('Phase ' + p + ' title: ' + g('ph' + p + 't'));
+      lines.push('Phase ' + p + ' description: ' + g('ph' + p + 'd'));
+      lines.push('Phase ' + p + ' image: ' + g('ph' + p + 'i'));
     }
 
-    lines.push('\n--- NEXT STEPS ---');
+    lines.push('');
+    lines.push('--- NEXT STEPS ---');
     for (var s = 1; s <= 3; s++) {
-      lines.push('Step ' + s + ' number/label: ' + getVal('step' + s + '-num'));
-      lines.push('Step ' + s + ' title: ' + getVal('step' + s + '-title'));
-      lines.push('Step ' + s + ' description: ' + getVal('step' + s + '-text'));
+      lines.push('Step ' + s + ' number: ' + g('s' + s + 'n'));
+      lines.push('Step ' + s + ' title: ' + g('s' + s + 't'));
+      lines.push('Step ' + s + ' description: ' + g('s' + s + 'd'));
     }
 
-    lines.push('\n--- BEFORE & AFTER ---');
-    lines.push('Before image: ' + getVal('ba-before'));
-    lines.push('After image: ' + getVal('ba-after'));
+    lines.push('');
+    lines.push('--- BEFORE & AFTER ---');
+    lines.push('Before image: ' + g('ba-before'));
+    lines.push('After image: ' + g('ba-after'));
 
-    lines.push('\n--- TESTIMONIALS (' + tiCount + ') ---');
-    lines.push('Background image: ' + getVal('testi-bg'));
+    lines.push('');
+    lines.push('--- TESTIMONIALS (' + tiCount + ') ---');
+    lines.push('Background image: ' + g('testi-bg'));
     for (var t = 1; t <= tiCount; t++) {
-      lines.push('Testimonial ' + t + ' photo: ' + getVal('t' + t + '-photo'));
-      lines.push('Testimonial ' + t + ' headline: ' + getVal('t' + t + '-headline'));
-      lines.push('Testimonial ' + t + ' full text: ' + getVal('t' + t + '-full'));
-      lines.push('Testimonial ' + t + ' name: ' + getVal('t' + t + '-name'));
+      lines.push('Testimonial ' + t + ' photo: ' + g('ti' + t + 'p'));
+      lines.push('Testimonial ' + t + ' headline: ' + g('ti' + t + 'h'));
+      lines.push('Testimonial ' + t + ' full text: ' + g('ti' + t + 'f'));
+      lines.push('Testimonial ' + t + ' name: ' + g('ti' + t + 'n'));
     }
 
     return lines.join('\n');
@@ -968,11 +1311,11 @@
   function copyAll() {
     var text = buildPlainText();
     navigator.clipboard.writeText(text).then(function() {
-      var msg = document.getElementById('copied-msg');
-      msg.classList.add('show');
-      setTimeout(function() { msg.classList.remove('show'); }, 2500);
+      var toast = document.getElementById('copied-toast');
+      toast.classList.add('show');
+      setTimeout(function() { toast.classList.remove('show'); }, 2800);
     });
   }
-
-  updateProgress();
 </script>
+</body>
+</html>
