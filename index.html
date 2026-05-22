@@ -1029,13 +1029,36 @@
       <div class="copy-wrap">
         <div class="copy-msg">
           <strong>Ready to build your proposal</strong>
-          Copy your responses, then open the SI Form Assistant and paste them in. The assistant will generate your code blocks one section at a time.
+          Click Copy All — or select all the text in the box below and copy manually (Ctrl+C / Cmd+C).
         </div>
         <button class="btn-copy" onclick="copyAll()">Copy All</button>
       </div>
       <p class="copied-toast" id="copied-toast">Copied to clipboard!</p>
 
-      <div class="summary-card" id="summary-output"></div>
+      <div style="margin-top: 20px;">
+        <p class="field-hint" style="margin-bottom: 8px;">Your responses — select all and copy if the button doesn't work in your browser:</p>
+        <textarea
+          id="plain-text-output"
+          readonly
+          onclick="this.select()"
+          style="
+            width: 100%;
+            min-height: 320px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            line-height: 1.7;
+            color: var(--dark-text);
+            background: #fff;
+            border: 0.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-sizing: border-box;
+            resize: vertical;
+            outline: none;
+          "
+        ></textarea>
+        <p class="field-hint" style="margin-top: 6px;">Click inside the box to select all text automatically.</p>
+      </div>
 
       <div class="nav-row">
         <button class="btn-back" onclick="goBack()">&larr; Back</button>
@@ -1309,45 +1332,31 @@
     return lines.join('\n');
   }
 
-  function copyAll() {
+  function buildSummary() {
     var text = buildPlainText();
+    document.getElementById('plain-text-output').value = text;
+  }
 
-    // Primary method — clipboard API
+  function copyAll() {
+    var ta = document.getElementById('plain-text-output');
+    ta.select();
+    ta.setSelectionRange(0, 99999); // mobile support
+
+    // Try clipboard API first
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(showCopied).catch(fallbackCopy);
+      navigator.clipboard.writeText(ta.value).then(showCopied).catch(function() {
+        // Fall back to execCommand
+        try { document.execCommand('copy'); showCopied(); } catch(e) {}
+      });
     } else {
-      fallbackCopy();
+      try { document.execCommand('copy'); showCopied(); } catch(e) {}
     }
+  }
 
-    function fallbackCopy() {
-      // Create a temporary textarea, select it, and execCommand copy
-      // Works inside iframes and older browsers
-      var ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.top = '0';
-      ta.style.left = '0';
-      ta.style.width = '1px';
-      ta.style.height = '1px';
-      ta.style.opacity = '0';
-      ta.setAttribute('readonly', '');
-      document.body.appendChild(ta);
-      ta.focus();
-      ta.select();
-      try {
-        document.execCommand('copy');
-        showCopied();
-      } catch(e) {
-        alert('Copy failed — please select all text in the review panel and copy manually (Ctrl+C / Cmd+C).');
-      }
-      document.body.removeChild(ta);
-    }
-
-    function showCopied() {
-      var toast = document.getElementById('copied-toast');
-      toast.classList.add('show');
-      setTimeout(function() { toast.classList.remove('show'); }, 2800);
-    }
+  function showCopied() {
+    var toast = document.getElementById('copied-toast');
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 2800);
   }
 
   // ── Auto-resize: reports document height to parent frame ──
