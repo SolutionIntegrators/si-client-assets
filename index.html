@@ -1157,6 +1157,7 @@
 
   // ── Summary builder ──
   function g(id) { var el = document.getElementById(id); return el ? (el.value || '').trim() : ''; }
+  function gOrBlank(id) { return g(id) || '—'; }
 
   function buildSummary() {
     var phCount = parseInt(document.getElementById('phase-count').value || 3);
@@ -1242,67 +1243,67 @@
     lines.push('=== SI PROPOSAL INTAKE — ' + selectedProposal.toUpperCase() + ' ===');
     lines.push('');
     lines.push('--- BRAND COLORS & FONTS ---');
-    lines.push('Lightest color: ' + g('c1t'));
-    lines.push('Second lightest: ' + g('c2t'));
-    lines.push('Darkest color: ' + g('c3t'));
-    lines.push('Second darkest: ' + g('c4t'));
-    lines.push('H1 font: ' + g('fh1'));
+    lines.push('Lightest color: ' + gOrBlank('c1t'));
+    lines.push('Second lightest: ' + gOrBlank('c2t'));
+    lines.push('Darkest color: ' + gOrBlank('c3t'));
+    lines.push('Second darkest: ' + gOrBlank('c4t'));
+    lines.push('H1 font: ' + gOrBlank('fh1'));
     lines.push('H2 font: ' + (g('fh2') || 'Same as H1'));
     lines.push('H3 font: ' + (g('fh3') || 'Same as H1'));
-    lines.push('H4 font: ' + g('fh4'));
-    lines.push('Paragraph font: ' + g('fp'));
+    lines.push('H4 font: ' + gOrBlank('fh4'));
+    lines.push('Paragraph font: ' + gOrBlank('fp'));
 
     lines.push('');
     lines.push('--- HERO BANNER ---');
-    lines.push('Brand name: ' + g('brand-name'));
-    lines.push('Static heading: ' + g('hero-static'));
+    lines.push('Brand name: ' + gOrBlank('brand-name'));
+    lines.push('Static heading: ' + gOrBlank('hero-static'));
     lines.push('Animated phrases:');
-    lines.push(g('hero-phrases'));
+    lines.push(g('hero-phrases') || '—');
     lines.push('Intro paragraph: ' + (g('hero-para') || '[Use default text]'));
-    lines.push('Background image: ' + g('hero-bg'));
+    lines.push('Background image: ' + gOrBlank('hero-bg'));
 
     lines.push('');
     lines.push('--- SCROLLING BANNER ---');
-    lines.push('Scrolling text: ' + g('marquee-text'));
-    lines.push('Separator: ' + (g('marquee-sep') || '·'));
+    lines.push('Scrolling text: ' + gOrBlank('marquee-text'));
+    lines.push('Separator: ' + (g('marquee-sep') || '· (default)'));
 
     lines.push('');
     lines.push('--- ABOUT ME ---');
-    lines.push('Photo URL: ' + g('about-photo'));
-    lines.push('Label: ' + g('about-label'));
-    lines.push('Heading: ' + g('about-heading'));
-    lines.push('About text: ' + g('about-text'));
+    lines.push('Photo URL: ' + gOrBlank('about-photo'));
+    lines.push('Label: ' + gOrBlank('about-label'));
+    lines.push('Heading: ' + gOrBlank('about-heading'));
+    lines.push('About text: ' + gOrBlank('about-text'));
 
     lines.push('');
     lines.push('--- CLIENT PROCESS (' + phCount + ' PHASES) ---');
     for (var p = 1; p <= phCount; p++) {
-      lines.push('Phase ' + p + ' label: ' + g('ph' + p + 'l'));
-      lines.push('Phase ' + p + ' title: ' + g('ph' + p + 't'));
-      lines.push('Phase ' + p + ' description: ' + g('ph' + p + 'd'));
-      lines.push('Phase ' + p + ' image: ' + g('ph' + p + 'i'));
+      lines.push('Phase ' + p + ' label: ' + gOrBlank('ph' + p + 'l'));
+      lines.push('Phase ' + p + ' title: ' + gOrBlank('ph' + p + 't'));
+      lines.push('Phase ' + p + ' description: ' + gOrBlank('ph' + p + 'd'));
+      lines.push('Phase ' + p + ' image: ' + gOrBlank('ph' + p + 'i'));
     }
 
     lines.push('');
     lines.push('--- NEXT STEPS ---');
     for (var s = 1; s <= 3; s++) {
-      lines.push('Step ' + s + ' number: ' + g('s' + s + 'n'));
-      lines.push('Step ' + s + ' title: ' + g('s' + s + 't'));
-      lines.push('Step ' + s + ' description: ' + g('s' + s + 'd'));
+      lines.push('Step ' + s + ' number: ' + gOrBlank('s' + s + 'n'));
+      lines.push('Step ' + s + ' title: ' + gOrBlank('s' + s + 't'));
+      lines.push('Step ' + s + ' description: ' + gOrBlank('s' + s + 'd'));
     }
 
     lines.push('');
     lines.push('--- BEFORE & AFTER ---');
-    lines.push('Before image: ' + g('ba-before'));
-    lines.push('After image: ' + g('ba-after'));
+    lines.push('Before image: ' + gOrBlank('ba-before'));
+    lines.push('After image: ' + gOrBlank('ba-after'));
 
     lines.push('');
     lines.push('--- TESTIMONIALS (' + tiCount + ') ---');
-    lines.push('Background image: ' + g('testi-bg'));
+    lines.push('Background image: ' + gOrBlank('testi-bg'));
     for (var t = 1; t <= tiCount; t++) {
-      lines.push('Testimonial ' + t + ' photo: ' + g('ti' + t + 'p'));
-      lines.push('Testimonial ' + t + ' headline: ' + g('ti' + t + 'h'));
-      lines.push('Testimonial ' + t + ' full text: ' + g('ti' + t + 'f'));
-      lines.push('Testimonial ' + t + ' name: ' + g('ti' + t + 'n'));
+      lines.push('Testimonial ' + t + ' photo: ' + gOrBlank('ti' + t + 'p'));
+      lines.push('Testimonial ' + t + ' headline: ' + gOrBlank('ti' + t + 'h'));
+      lines.push('Testimonial ' + t + ' full text: ' + gOrBlank('ti' + t + 'f'));
+      lines.push('Testimonial ' + t + ' name: ' + gOrBlank('ti' + t + 'n'));
     }
 
     return lines.join('\n');
@@ -1310,11 +1311,43 @@
 
   function copyAll() {
     var text = buildPlainText();
-    navigator.clipboard.writeText(text).then(function() {
+
+    // Primary method — clipboard API
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(showCopied).catch(fallbackCopy);
+    } else {
+      fallbackCopy();
+    }
+
+    function fallbackCopy() {
+      // Create a temporary textarea, select it, and execCommand copy
+      // Works inside iframes and older browsers
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.top = '0';
+      ta.style.left = '0';
+      ta.style.width = '1px';
+      ta.style.height = '1px';
+      ta.style.opacity = '0';
+      ta.setAttribute('readonly', '');
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showCopied();
+      } catch(e) {
+        alert('Copy failed — please select all text in the review panel and copy manually (Ctrl+C / Cmd+C).');
+      }
+      document.body.removeChild(ta);
+    }
+
+    function showCopied() {
       var toast = document.getElementById('copied-toast');
       toast.classList.add('show');
       setTimeout(function() { toast.classList.remove('show'); }, 2800);
-    });
+    }
   }
 
   // ── Auto-resize: reports document height to parent frame ──
